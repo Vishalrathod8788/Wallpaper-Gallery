@@ -32,7 +32,7 @@ export const WallpaperData = () => {
       button.textContent = "Downloading...";
 
       // Fetch the image with cache: 'no-store' to ensure we get the exact image
-      const response = await fetch(url, { cache: 'no-store' });
+      const response = await fetch(url, { cache: "no-store" });
       if (!response.ok) throw new Error("Download failed");
 
       const blob = await response.blob();
@@ -42,7 +42,7 @@ export const WallpaperData = () => {
       const link = document.createElement("a");
       link.href = downloadUrl;
       // Use a more descriptive filename with the image ID
-      const imageId = url.split('/id/')[1].split('/')[0];
+      const imageId = url.split("/id/")[1].split("/")[0];
       link.download = `wallpaper-${imageId}.jpg`;
 
       // Trigger download

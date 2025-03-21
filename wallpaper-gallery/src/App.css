@@ -1,0 +1,159 @@
+/* Main container for our app */
+.app-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+/* Style for the title */
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: bold;
+}
+
+/* Grid to show wallpapers in rows and columns */
+.wallpaper-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 10px;
+}
+
+/* Style for each wallpaper box */
+.wallpaper-item {
+  position: relative;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: white;
+  aspect-ratio: 9/16;
+}
+
+/* Make wallpaper lift up when mouse hovers over it */
+.wallpaper-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Style for the wallpaper image */
+.wallpaper-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+/* Zoom effect on image hover */
+.wallpaper-item:hover img {
+  transform: scale(1.05);
+}
+
+/* Style for the download button */
+.download-button {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  background-color: rgba(76, 175, 80, 0.9);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+/* Show button on hover */
+.wallpaper-item:hover .download-button {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Make button darker when mouse hovers over it */
+.download-button:hover {
+  background-color: rgba(56, 142, 60, 0.95);
+  transform: scale(1.05);
+}
+
+/* Loading indicator styles */
+.infinite-scroll-component__outerdiv {
+  width: 100%;
+}
+
+.infinite-scroll-component {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 10px;
+}
+
+/* Loading text style */
+h4 {
+  text-align: center;
+  grid-column: 1 / -1;
+  color: #666;
+  padding: 20px;
+  font-size: 1.2rem;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .app-container {
+    padding: 10px;
+  }
+
+  .wallpaper-grid {
+    gap: 15px;
+    padding: 5px;
+  }
+
+  .download-button {
+    opacity: 1;
+    transform: translateY(0);
+    bottom: 10px;
+    right: 10px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .wallpaper-grid {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  }
+
+  .wallpaper-item {
+    border-radius: 20px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .app-container {
+    background-color: #1a1a1a;
+  }
+
+  h1 {
+    color: #ffffff;
+  }
+
+  .wallpaper-item {
+    background-color: #2d2d2d;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  }
+
+  h4 {
+    color: #aaa;
+  }
+}
