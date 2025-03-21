@@ -1,9 +1,9 @@
-import { Wallpaper } from "./components/Wallpaper";
+import { WallpaperData } from "./components/WallpaperData";
 
 export const App = () => {
   return (
     <div className="app">
-      <Wallpaper />
+      <WallpaperData />
     </div>
   );
 };

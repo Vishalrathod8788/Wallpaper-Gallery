@@ -1,7 +1,8 @@
-export const Wallpaper = () => {
+export const Wallpaper = ({ url, id, onDownload }) => {
   return (
-    <div className="wallpaper">
-      <h1>Wallpaper Gallery</h1>
+    <div>
+      <img src={url} alt={`wallpaper ${id}`} loading="lazy" />
+      <button onClick={onDownload}>Download</button>
     </div>
   );
 };
