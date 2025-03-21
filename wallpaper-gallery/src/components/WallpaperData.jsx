@@ -8,13 +8,15 @@ export const WallpaperData = () => {
 
   // Function to fetch more wallpapers
   const fetchWallpaper = async () => {
-    const newWallpaper = [];
-    for (let i = 0; i < 10; i++) {
-      newWallpaper.push({
-        id: wallpaper.length + i + 1,
-        url: `https://picsum.photos/720/1280?random=${Date.now() + i}`,
-      });
-    }
+    const newWallpaper = Array.from({ length: 10 }, (_, index) => {
+      // Generate a stable ID for each image
+      const imageId = (page - 1) * 10 + index + 1;
+      return {
+        id: wallpaper.length + index + 1,
+        // Use the stable ID in the URL
+        url: `https://picsum.photos/id/${imageId}/720/1280`,
+      };
+    });
 
     setWallpaper([...wallpaper, ...newWallpaper]);
     setPage(page + 1);
@@ -29,8 +31,8 @@ export const WallpaperData = () => {
       // Show loading message
       button.textContent = "Downloading...";
 
-      // Fetch the image
-      const response = await fetch(url);
+      // Fetch the image with cache: 'no-store' to ensure we get the exact image
+      const response = await fetch(url, { cache: 'no-store' });
       if (!response.ok) throw new Error("Download failed");
 
       const blob = await response.blob();
@@ -39,7 +41,9 @@ export const WallpaperData = () => {
       const downloadUrl = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = downloadUrl;
-      link.download = `wallpaper-${Date.now()}.jpg`;
+      // Use a more descriptive filename with the image ID
+      const imageId = url.split('/id/')[1].split('/')[0];
+      link.download = `wallpaper-${imageId}.jpg`;
 
       // Trigger download
       document.body.appendChild(link);
@@ -66,21 +70,23 @@ export const WallpaperData = () => {
   return (
     <div className="app-container">
       <h1>Wallpaper Gallery</h1>
-      <InfiniteScroll
-        dataLength={wallpaper.length} // Number of items loaded so far
-        next={fetchWallpaper} // Function to load more items
-        hasMore={true} // Whether there are more items to load
-        loader={<h4>Loading...</h4>} // Show a loading message
-      >
-        {wallpaper.map((wallpaper) => (
-          <Wallpaper
-            key={wallpaper.id}
-            url={wallpaper.url}
-            id={wallpaper.id}
-            onDownload={() => downloadWallpaper(wallpaper.url)} // Pass URL and ID
-          />
-        ))}
-      </InfiniteScroll>
+      <div className="wallpaper-grid">
+        <InfiniteScroll
+          dataLength={wallpaper.length}
+          next={fetchWallpaper}
+          hasMore={true}
+          loader={<h4>Loading...</h4>}
+        >
+          {wallpaper.map((item) => (
+            <Wallpaper
+              key={item.id}
+              url={item.url}
+              id={item.id}
+              onDownload={(e) => downloadWallpaper(item.url, e)}
+            />
+          ))}
+        </InfiniteScroll>
+      </div>
     </div>
   );
 };
