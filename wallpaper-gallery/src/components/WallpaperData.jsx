@@ -21,20 +21,39 @@ export const WallpaperData = () => {
   };
 
   // Function to handle wallpaper download
-  const downloadWallpaper = async (url, id) => {
+  const downloadWallpaper = async (url, e) => {
+    const button = e.currentTarget;
+    const originalText = button.textContent;
+
     try {
+      // Show loading message
+      button.textContent = "Downloading...";
+
+      // Fetch the image
       const response = await fetch(url);
+      if (!response.ok) throw new Error("Download failed");
+
       const blob = await response.blob();
-      const downloadUrl = URL.createObjectURL(blob);
+
+      // Create a download link
+      const downloadUrl = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = downloadUrl;
-      link.download = `wallpaper-${id}.jpg`; // Use the wallpaper ID for the filename
+      link.download = `wallpaper-${Date.now()}.jpg`;
+
+      // Trigger download
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      URL.revokeObjectURL(downloadUrl); // Clean up
+
+      // Clean up
+      window.URL.revokeObjectURL(downloadUrl);
+      button.textContent = originalText;
     } catch (error) {
-      console.log(error);
+      console.error("Error downloading wallpaper:", error);
+      alert("Failed to download wallpaper");
+      // Reset button text if there's an error
+      button.textContent = "Download";
     }
   };
 
@@ -58,7 +77,7 @@ export const WallpaperData = () => {
             key={wallpaper.id}
             url={wallpaper.url}
             id={wallpaper.id}
-            onDownload={() => downloadWallpaper(wallpaper.url, wallpaper.id)} // Pass URL and ID
+            onDownload={() => downloadWallpaper(wallpaper.url)} // Pass URL and ID
           />
         ))}
       </InfiniteScroll>
