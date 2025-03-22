@@ -6,7 +6,6 @@ export const WallpaperData = () => {
   const [wallpaper, setWallpaper] = useState([]);
   const [page, setPage] = useState(1);
 
-  // Function to fetch more wallpapers
   const fetchWallpaper = async () => {
     const newWallpaper = Array.from({ length: 10 }, (_, index) => {
       // Generate a stable ID for each image
